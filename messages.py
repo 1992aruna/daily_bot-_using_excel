@@ -52,6 +52,7 @@ def send_image_message(contact_number,image, caption):
     print(response)
     print(response.json())
 
+
 ##-------------------------------- Customized image message sending -----------------------------------------------------------------------------   ##
 
 def send_images(contact_number,option):
@@ -102,6 +103,9 @@ def send_list(contact_number, message, sections):
                 'Content-Type': 'application/json'
             }
     response = requests.request("POST", url, headers=headers, json=payload)
+    print(response)
+    print(response.json())
+
 
 def get_media(filename):
     url = f"{API_URL}/api/v1/getMedia"
@@ -194,3 +198,6 @@ def send_branch_images():
 #     except Exception as e:
 #         print(f"Error sending Excel file: {str(e)}")
 #         return False
+
+#--------------------------------------SEND EXCEL TO RECIPIENT------------------------------------------------#
+

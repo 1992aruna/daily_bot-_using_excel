@@ -1,5 +1,6 @@
 # from app import API_URL, ACCESS_TOKEN
 import os
+import requests
 # import gridfs
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -48,3 +49,18 @@ def retrieve_user_answers():
 #     except Exception as e:
 #         print(f"Error sending Excel file: {str(e)}")
 #         return False
+def send_excel_file(phone_number, file_path, caption):
+    url = f"{API_URL}/api/v1/sendSessionFile/{phone_number}?caption={caption}"
+
+    payload = {}
+    file_name = file_path.split('/')[-1]  # Extract the file name from the file path
+    files = [
+        ('file', (file_name, open(file_path, 'rb'), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
+    ]
+    headers = {
+        'Authorization': ACCESS_TOKEN
+    }
+
+    response = requests.post(url, headers=headers, json=payload, files=files)
+    print(response)
+    print(response.json())

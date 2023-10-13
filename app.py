@@ -8,7 +8,7 @@ import pandas as pd
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from messages import *
-from utils import retrieve_user_answers
+from utils import retrieve_user_answers, send_excel_file
 from google.oauth2 import service_account
 import gspread
 import logging
@@ -212,14 +212,30 @@ def generate_report():
     create_excel_report(user_answers)
     print("Excel report created")  # Print after the report is created
 
+    phone_number = "917892409211"
+    print(f"Sending file to: {phone_number}")
     # mongo.db.answers_received.delete_many({})
+    send_file(phone_number)
+    
 
 # schedule.every().day.at("17:51").do(generate_report)
 # Schedule the generate_report function to run daily at 17:51
-scheduler.add_job(generate_report, trigger=CronTrigger(hour=18, minute=17))
+scheduler.add_job(generate_report, trigger=CronTrigger(hour=19, minute=20))
 
 # Start the scheduler
 scheduler.start()
+
+def send_file(phone_number):
+    dir = 'D:/New Project/Python/New_Bot/Bot/daily_bot _using_excel/Output'
+    # phone_number = "917892409211"
+    # Get the current date to create the file name
+    current_date = datetime.date.today()
+    formatted_date = current_date.strftime("%Y-%m-%d")
+    
+    file_name = f'answer_{formatted_date}.xlsx'
+    file_path = f'{dir}/{file_name}'
+    caption = 'Your daily report'
+    send_excel_file(phone_number, file_path, caption)
 
 allowed_extensions=["png", "jpg", "jpeg"]
 
