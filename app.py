@@ -212,15 +212,18 @@ def generate_report():
     create_excel_report(user_answers)
     print("Excel report created")  # Print after the report is created
 
+    mongo.db.answers_received.delete_many({})
+
     phone_number = "917892409211"
     print(f"Sending file to: {phone_number}")
-    # mongo.db.answers_received.delete_many({})
     send_file(phone_number)
+
+    
     
 
 # schedule.every().day.at("17:51").do(generate_report)
 # Schedule the generate_report function to run daily at 17:51
-scheduler.add_job(generate_report, trigger=CronTrigger(hour=19, minute=20))
+scheduler.add_job(generate_report, trigger=CronTrigger(hour=19, minute=33))
 
 # Start the scheduler
 scheduler.start()
